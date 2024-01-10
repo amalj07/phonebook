@@ -6,7 +6,7 @@ const ObjectId = require('mongodb').ObjectId;
 const app = express();
 app.use(express.json());
 
-app.get('/health', (req, res) => {
+app.get('/', (req, res) => {
     res.status(200).send('ok');
 });
 
