@@ -52,9 +52,24 @@ app.get('/items', async (req, res) => {
     }
 });
 
-app.put('/items/:id', async (req, res) => {
+app.patch('/items/:id', async (req, res) => {
     try {
+        const { name, email, number, place } = req.body;
+        const updatedContact = {
+            ...(name != undefined && { name }),
+            ...(email != undefined && { email }),
+            ...(number != undefined && { number }),
+            ...(place != undefined && { place })
+        };
 
+        const result = await mongoClient.db('phonebook').collection('contacts').updateOne({ _id: new ObjectId(req.params.id) }, {
+            $set: {
+                ...updatedContact
+            }
+        });
+
+        console.log(result);
+        res.status(200).send('Contact updated.')
     } catch (error) {
         console.log('Error while updating contact');
         console.log(error);
@@ -65,9 +80,12 @@ app.put('/items/:id', async (req, res) => {
 app.delete('/items/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const response = await mongoClient.db('phonbook').collection('contacts').deleteOne({ _id: new ObjectId(id) });
-        console.log(response);
-        res.status(204).send();
+        const response = await mongoClient.db('phonebook').collection('contacts').deleteOne({ _id: new ObjectId(id) });
+        if (response.deletedCount == 1) {
+            res.status(204).send('contact deleted');
+        } else {
+            res.status(404).send('No contact found.');
+        }
     } catch (error) {
         console.log('Error while updating contact');
         console.log(error);
