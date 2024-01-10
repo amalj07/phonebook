@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
     res.status(200).send('ok');
 });
 
-app.post('/items', async (req, res) => {
+app.post('/contact', async (req, res) => {
     try {
         const doc = {
             name: req.body.name,
@@ -27,7 +27,7 @@ app.post('/items', async (req, res) => {
     }
 });
 
-app.get('/items/:id', async (req, res) => {
+app.get('/contact/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const contact = await mongoClient.db('phonebook').collection('contacts').findOne({ _id: new ObjectId(id) });
@@ -40,7 +40,7 @@ app.get('/items/:id', async (req, res) => {
     }
 });
 
-app.get('/items', async (req, res) => {
+app.get('/contact', async (req, res) => {
     try {
         const contacts = await mongoClient.db('phonebook').collection('contacts').find({}).toArray();
         console.log(contacts);
@@ -52,7 +52,7 @@ app.get('/items', async (req, res) => {
     }
 });
 
-app.patch('/items/:id', async (req, res) => {
+app.patch('/contact/:id', async (req, res) => {
     try {
         const { name, email, number, place } = req.body;
         const updatedContact = {
@@ -78,7 +78,7 @@ app.patch('/items/:id', async (req, res) => {
     }
 });
 
-app.delete('/items/:id', async (req, res) => {
+app.delete('/contact/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const response = await mongoClient.db('phonebook').collection('contacts').deleteOne({ _id: new ObjectId(id) });
