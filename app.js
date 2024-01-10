@@ -19,7 +19,7 @@ app.post('/items', async (req, res) => {
             place: req.body.place
         };
         await mongoClient.db('phonebook').collection('contacts').insertOne(doc);
-        res.status(201).send('Contact created successfully');
+        res.status(201).send(doc);
     } catch (error) {
         console.log('Error while creating contact');
         console.log(error);
@@ -62,14 +62,15 @@ app.patch('/items/:id', async (req, res) => {
             ...(place != undefined && { place })
         };
 
-        const result = await mongoClient.db('phonebook').collection('contacts').updateOne({ _id: new ObjectId(req.params.id) }, {
+        const result = await mongoClient.db('phonebook').collection('contacts').findOneAndUpdate({ _id: new ObjectId(req.params.id) }, {
             $set: {
                 ...updatedContact
             }
+        }, {
+            returnDocument: 'after'
         });
 
-        console.log(result);
-        res.status(200).send('Contact updated.')
+        res.status(200).send(result)
     } catch (error) {
         console.log('Error while updating contact');
         console.log(error);
