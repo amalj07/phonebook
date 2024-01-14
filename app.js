@@ -1,9 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 const mongoClient = require('./mongoClient');
 const ObjectId = require('mongodb').ObjectId;
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
