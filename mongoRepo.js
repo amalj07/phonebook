@@ -1,4 +1,5 @@
 const mongoClient = require('./db');
+const ObjectId = require('mongodb').ObjectId;
 const db = mongoClient.db('phonebook');
 
 async function addContact(data) {
@@ -29,9 +30,8 @@ async function getContacts() {
 };
 
 
-async function getSingleContact() {
+async function getSingleContact(id) {
     try {
-        const id = req.params.id;
         const contact = await db.collection('contacts').findOne({ _id: new ObjectId(id) });
         console.log(contact);
         return contact;
@@ -41,7 +41,7 @@ async function getSingleContact() {
     }
 }
 
-async function updatedContact(data) {
+async function updatedContact(data, id) {
     try {
         const { name, email, number, place } = data;
         const updatedContact = {
@@ -51,7 +51,7 @@ async function updatedContact(data) {
             ...(place != undefined && { place })
         };
 
-        const result = await db.collection('contacts').findOneAndUpdate({ _id: new ObjectId(req.params.id) }, {
+        const result = await db.collection('contacts').findOneAndUpdate({ _id: new ObjectId(id) }, {
             $set: {
                 ...updatedContact
             }

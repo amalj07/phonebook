@@ -2,9 +2,16 @@ const express = require('express');
 const mongoRepo = require('./mongoRepo');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.status(200).send('ok');
+router.get('/', async (req, res) => {
+    try {
+        const contacts = await mongoRepo.getContacts();
+        res.status(200).send(contacts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Failed to fetch contacts');
+    }
 });
+
 
 router.post('/', async (req, res) => {
     try {
@@ -16,9 +23,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/contact/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const contact = await mongoRepo.getSingleContact(id);
+        const contact = await mongoRepo.getSingleContact(req.params.id);
         res.status(200).send(contact);
     } catch (error) {
         console.log(error);
@@ -26,19 +33,9 @@ router.get('/contact/:id', async (req, res) => {
     }
 });
 
-router.get('/contact', async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
-        const contacts = await mongoRepo.getContacts();
-        res.status(200).send(contacts);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Failed to fetch contacts');
-    }
-});
-
-router.patch('/contact/:id', async (req, res) => {
-    try {
-        const result = await mongoRepo.updatedContact(req.body);
+        const result = await mongoRepo.updatedContact(req.body, req.params.id);
         res.status(200).send(result);
     } catch (error) {
         console.log(error);
@@ -46,7 +43,7 @@ router.patch('/contact/:id', async (req, res) => {
     }
 });
 
-router.delete('/contact/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const response = await mongoRepo.deleteContact(req.params.id);
         if (response) {
