@@ -1,4 +1,4 @@
-const mongoClient = require('./mongoClient');
+const mongoClient = require('./db');
 const db = mongoClient.db('phonebook');
 
 async function addContact(data) {

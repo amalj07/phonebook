@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     res.status(200).send('ok');
 });
 
-router.post('/contact', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const result = await mongoRepo.addContact(req.body);
         res.status(201).send(result);
