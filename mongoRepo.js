@@ -33,7 +33,6 @@ async function getContacts() {
 async function getSingleContact(id) {
     try {
         const contact = await db.collection('contacts').findOne({ _id: new ObjectId(id) });
-        console.log(contact);
         return contact;
     } catch (error) {
         console.log('Error while fetching contact');

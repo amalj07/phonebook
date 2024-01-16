@@ -23,9 +23,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:contactId', async (req, res) => {
     try {
-        const contact = await mongoRepo.getSingleContact(req.params.id);
+        const contact = await mongoRepo.getSingleContact(req.params.contactId);
         res.status(200).send(contact);
     } catch (error) {
         console.log(error);
@@ -33,9 +33,9 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:contactId', async (req, res) => {
     try {
-        const result = await mongoRepo.updatedContact(req.body, req.params.id);
+        const result = await mongoRepo.updatedContact(req.body, req.params.contactId);
         res.status(200).send(result);
     } catch (error) {
         console.log(error);
@@ -43,9 +43,9 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:contactId', async (req, res) => {
     try {
-        const response = await mongoRepo.deleteContact(req.params.id);
+        const response = await mongoRepo.deleteContact(req.params.contactId);
         if (response) {
             res.status(204).send('contact deleted');
         } else {
