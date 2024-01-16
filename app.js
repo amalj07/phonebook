@@ -8,6 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.status(200).send('ok');
+})
+
 app.use('/contacts', router)
 
 app.listen(3000, function () {
