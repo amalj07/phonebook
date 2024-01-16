@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/contact', router)
+app.use('/contacts', router)
 
 app.listen(3000, function () {
     console.log('Server listening on port 3000');
